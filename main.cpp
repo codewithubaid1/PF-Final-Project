@@ -1,12 +1,15 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <conio.h>
+#include <windows.h>
+
 using namespace std;
 bool isCurrentBlockCell(int, int);
 bool canMoveTo(int, int);
 void InitializeBoard();
 void DrawBoard();
-
+void handleInput();
 
 const int ROWS = 20;
 const int COLS = 10;
@@ -45,11 +48,11 @@ int blockY = 0;
 int main()
 {
 
+  srand(time(0));
   currentShape = rand() % 3;
   nextShape = rand() % 3;
   blockX = (COLS - shapeWidth[currentShape])/2;
   blockY = 0;
-  srand(time(0));
   InitializeBoard();
   DrawBoard();
   return 0;
@@ -136,4 +139,24 @@ bool canMoveTo(int newX, int newY){
       } 
   }
   return true;
+}
+
+void handleInput(){
+  if(_kbhit()){
+    char key = _getch();
+    if (key == 'a' || key == 'A'){
+      if(canMoveTo(blockX-1,blockY)){
+        blockX--;
+      }
+    }
+    else if(key == 'd' || key == 'D'){
+      if(canMoveTo(blockX+1,blockY)){
+        blockX++;
+      }
+    }
+
+    else if(key == 's' || key == 'S'){
+      blockY++;
+    }
+  }
 }
