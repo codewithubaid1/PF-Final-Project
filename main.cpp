@@ -619,7 +619,7 @@ void DrawStatistics()
   gotoXY(28, 20);
   cout << "Q : Quit";
 
-  gotoXY(28, 21)
+  gotoXY(28, 21);
   cout << "P: Pause";
 }
 
