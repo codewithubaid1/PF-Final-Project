@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 const int ROWS = 20;
@@ -28,11 +30,11 @@ int shapes[4][4][4]{
 };
 
 int shapeHeight[3] = {2,1,2};
-int shapeHeight[3] = {2,4,3};
-int currentShape; 
-int nextShape;
-int blockX;
-int blockY;
+int shapeWidth[3] = {2,4,3};
+int currentShape = rand() % 4;
+int nextShape = rand() % 4;
+int blockX = (COLS - shapeWidth[currentShape])/2;
+int blockY = 0;
 void InitializeBoard()
 {
 
@@ -83,9 +85,10 @@ void DrawBoard()
   }
   cout << "+";
 }
+
 int main()
 {
-
+  srand(time(0));
   InitializeBoard();
   DrawBoard();
   return 0;
