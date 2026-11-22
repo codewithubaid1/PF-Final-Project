@@ -655,33 +655,33 @@ int getFallInterval()
 }
 void DrawLegend()
 {
-    gotoXY(57, 2);
+    gotoXY(63, 2);
     cout << "------ BLOCK LEGEND ------";
 
-    gotoXY(57, 4);
+    gotoXY(60, 4);
     cout << "O : Square";
 
-    gotoXY(57, 5);
+    gotoXY(60, 5);
     cout << "I : Line";
 
-    gotoXY(57, 6);
+    gotoXY(60, 6);
     cout << "Z : Zigzag";
 
-    gotoXY(57, 7);
+    gotoXY(60, 7);
     cout << "T : T-Shape";
 
-    gotoXY(57, 8);
+    gotoXY(60, 8);
     cout << "L : L-Shape";
 }
 
 void DrawNextShape()
 {
-    gotoXY(85, 2);
+    gotoXY(88, 2);
     cout << "------- NEXT BLOCK -------";
 
     for (int r = 0; r < 4; r++)
     {
-        gotoXY(90, 4 + r);
+        gotoXY(93, 4 + r);
 
         for (int c = 0; c < 4; c++)
         {
