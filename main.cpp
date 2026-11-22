@@ -24,6 +24,14 @@ const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool [][COLS]);
 void markPattern(int, int, int, int, bool [][COLS]);
 void applyGravity(bool marked[][COLS]);
+
+
+string playerName;
+int level = 1;
+int highestScore = 0;
+string highestScorePlayer;
+int lastScore = 0;
+string lastScorePlayer;
 int score = 0; 
 int lastScore = 0;
 int activeShape[4][4];
@@ -408,7 +416,6 @@ void checkCompletedPatterns(){
               score += calculateScore(height, width);
               isPatternDetected = true;
               markPattern(r, c, height, width, marked);
-              isPatternDetected = true;
             }
           }
         }
