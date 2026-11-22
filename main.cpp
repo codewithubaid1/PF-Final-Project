@@ -153,6 +153,7 @@ void DrawBoard()
   cout << "+";
 
   DrawStatistics();
+  DrawSeparator(55, 2, 20);
   DrawLegend();
   DrawNextShape();
 }
@@ -652,6 +653,15 @@ int getFallInterval()
     return 450;
   else
     return 250;
+}
+
+void DrawSeparator(int x, int startY, int endY)
+{
+    for (int y = startY; y <= endY; y++)
+    {
+        gotoXY(x, y);
+        cout << "|";
+    }
 }
 void DrawLegend()
 {
