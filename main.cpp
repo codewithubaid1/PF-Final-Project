@@ -278,16 +278,34 @@ bool spawnNextBlock()
 void GameLoop()
 {
   DWORD lastFall = GetTickCount();
-  updateLevel();
-  const DWORD fallInterval = getFallInterval();
 
   bool running = true;
 
   while (running)
   {
+    updateLevel();
+    
+    DWORD currentTime = GetTickCount();
+
+    if (quitRequested)
+    {
+      running = false;
+      break;
+    }
+
+    if (isPaused)
+    {
+      lastFall = GetTickCount();
+
+      DrawBoard();
+      Sleep(30);
+
+      continue;
+    }
+
+    const DWORD fallInterval = getFallInterval();
     handleInput();
 
-    DWORD currentTime = GetTickCount();
 
     if (currentTime - lastFall >= fallInterval)
     {
@@ -613,9 +631,9 @@ void hideCursor()
 
 void updateLevel()
 {
-  if (score >= 1500)
+  if (score >= 1000)
     level = 3;
-  else if (score >= 500)
+  else if (score >= 300)
     level = 2;
   else
     level = 1;
