@@ -372,6 +372,30 @@ void checkCompletedPatterns(){
       }
     }
   }
+
+  for(int r = 0; r < ROWS-3; r++){
+      for(int c = 0; c < COLS-3; c++){
+          bool complete = true;
+          for(int i = 0; i < 3; i++){
+              for(int j = 0; j < 3; j++){
+                  if(board[r+i][c+j] == 0){
+                      complete = false;
+                      break;
+                  }
+              }
+              if(!complete) break;
+          }
+
+          if(complete){
+              score += 150;
+              for(int i = 0; i < 3; i++){
+                  for(int j = 0; j < 3; j++){
+                      marked[r+i][c+j] = true;
+                  }
+              }
+          }
+      }
+  }
   applyGravity(marked);
 }
 
@@ -391,3 +415,4 @@ void applyGravity(bool marked[][COLS]){
 
   }
 }
+
