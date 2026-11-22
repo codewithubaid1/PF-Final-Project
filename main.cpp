@@ -284,7 +284,7 @@ void GameLoop()
   while (running)
   {
     updateLevel();
-    
+    handleInput();
     DWORD currentTime = GetTickCount();
 
     if (quitRequested)
@@ -304,7 +304,7 @@ void GameLoop()
     }
 
     const DWORD fallInterval = getFallInterval();
-    handleInput();
+    
 
 
     if (currentTime - lastFall >= fallInterval)
