@@ -22,6 +22,7 @@ void rotateCurrentBllock();
 void checkCompletedPatterns();
 int calculateScore(int, int);
 void gotoXY(int, int);
+void hideCursor();
 const int ROWS = 20;
 const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool[][COLS]);
@@ -85,6 +86,7 @@ int main()
   cout << "Enter your name: ";
   getline(cin, playerName);
   srand(time(0));
+  hideCursor();
   currentShape = rand() % 5;
   nextShape = rand() % 5;
   loadCurrentShape();
@@ -533,7 +535,7 @@ void DrawStatistics()
     cout << "------ GAME INFORMATION ------";
 
     gotoXY(28, 4);
-    cout << "Player Name : " << playerName << "          ";
+    cout << "Player Name : " << setw(20) << playerName << "          ";
 
     gotoXY(28, 5);
     cout << "Score       : " << setw(10) << score << "          ";
@@ -548,10 +550,10 @@ void DrawStatistics()
     cout << "-------- HIGHEST SCORE -------";
 
     gotoXY(28, 12);
-    cout << "Highest Score : " << highestScore << "          ";
+    cout << "Highest Score : " << setw(10) << highestScore << "          ";
 
     gotoXY(28, 13);
-    cout << "Player Name   : " << highestScorePlayer << "          ";
+    cout << "Player Name   : " << setw(20) << highestScorePlayer << "          ";
 
     gotoXY(28, 14);
     cout << "-------- CONTROLS ------------";
@@ -570,4 +572,15 @@ void DrawStatistics()
 
     gotoXY(28, 20);
     cout << "Q : Quit";
+}
+
+void hideCursor()
+{
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO cursorInfo;
+    cursorInfo.dwSize = 1;
+    cursorInfo.bVisible = FALSE;
+
+    SetConsoleCursorInfo(consoleHandle, &cursorInfo);
 }
