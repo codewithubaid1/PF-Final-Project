@@ -14,7 +14,8 @@ void lockBlock();
 bool spawnNextBlock();
 void GameLoop();
 void loadCurrentShape();
-void loadCurrentShape();
+bool canPlaceShape(int, int, int[][4]);
+void rotateCurrentBllock();
 
 const int ROWS = 20;
 const int COLS = 10;
@@ -56,6 +57,7 @@ int main()
   srand(time(0));
   currentShape = rand() % 3;
   nextShape = rand() % 3;
+  loadCurrentShape();
   blockX = (COLS - shapeWidth[currentShape]) / 2;
   blockY = 0;
   InitializeBoard();
@@ -124,7 +126,7 @@ bool isCurrentBlockCell(int row, int col)
     return false;
   }
 
-  return shapes[currentShape][r][c] == 1;
+  return activeShape[r][c] == 1;
 }
 
 bool canMoveTo(int newX, int newY)
@@ -133,7 +135,7 @@ bool canMoveTo(int newX, int newY)
   {
     for (int c = 0; c < 4; c++)
     {
-      if (shapes[currentShape][r][c] == 1)
+      if (activeShape[r][c] == 1)
       {
         int row = newY + r;
         int col = newX + c;
@@ -180,6 +182,9 @@ void handleInput()
         blockY++;
       }
     }
+    else if(key == 'w' || key == 'W'){
+      rotateCurrentBllock();
+    }
   }
 }
 
@@ -205,6 +210,7 @@ bool spawnNextBlock()
 {
 
   currentShape = nextShape;
+  loadCurrentShape();
   nextShape = rand() % 3;
   blockY = 0;
   blockX = (COLS - shapeWidth[currentShape]) / 2;
@@ -218,24 +224,31 @@ bool spawnNextBlock()
   return true;
 }
 
-void GameLoop() {
+void GameLoop()
+{
   DWORD lastFall = GetTickCount();
   const DWORD fallInterval = 700;
 
   bool running = true;
 
-  while(running){
+  while (running)
+  {
     handleInput();
 
     DWORD currentTime = GetTickCount();
 
-    if(currentTime - lastFall >= fallInterval){
-      if(canMoveTo(blockX,blockY+1)){
+    if (currentTime - lastFall >= fallInterval)
+    {
+      if (canMoveTo(blockX, blockY + 1))
+      {
         blockY++;
-      }else{
+      }
+      else
+      {
         lockBlock();
 
-        if(!spawnNextBlock()){
+        if (!spawnNextBlock())
+        {
           running = false;
         }
       }
@@ -249,11 +262,83 @@ void GameLoop() {
   cout << "\n\nGame Over";
 }
 
-void loadCurrentShape(){
+void loadCurrentShape()
+{
+
+  for (int r = 0; r < 4; r++)
+  {
+    for (int c = 0; c < 4; c++)
+    {
+      activeShape[r][c] = shapes[currentShape][r][c];
+    }
+  }
+}
+
+bool canPlaceShape(int newX, int newY, int candidate[][4])
+{
+  for (int r = 0; r < 4; r++)
+  {
+    for (int c = 0; c < 4; c++)
+    {
+      if (candidate[r][c] == 1)
+      {
+        int row = newY + r;
+        int col = newX + c;
+
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
+        {
+          return false;
+        }
+        if (board[row][col] == 1)
+        {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+void rotateCurrentBllock(){
+
+  int rotated[4][4] = {};
+  int normalized[4][4] = {};
+
+  for (int r = 0; r < 4; r++){
+    for(int c = 0; c < 4; c++){
+      rotated[c][c-r] = activeShape[r][c];
+    }
+  }
+
+  int minR = 4, minC = 4;
 
   for(int r = 0; r < 4; r++){
     for(int c = 0; c < 4; c++){
-      activeShape[r][c] = shapes[currentShape][r][c];
+      if(rotated[r][c] == 1){
+        if(r < minR) {
+          minR = r;
+        }
+        if(c < minC){
+          minC = c;
+        }
+      }
+    }
+  }
+
+  for(int r = 0; r < 4; r++){
+    for(int c = 0; c < 4; c++){
+      if(rotated[r][c] == 1){
+        normalized[r-minR][c-minC] = 1;
+      }
+    }
+  }
+
+  if(canPlaceShape(blockX, blockY, normalized)){
+    for(int r = 0; r < 4; r++){
+      for(int c = 0; c < 4; c++){
+        activeShape[r][c] = normalized[r][c];
+      }
     }
   }
 }
