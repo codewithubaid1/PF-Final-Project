@@ -12,7 +12,7 @@ const int ROWS = 20;
 const int COLS = 10;
 
 int board[ROWS][COLS];
-int shapes[4][4][4]{
+int shapes[3][4][4]{
   {
     {1,1,0,0},
     {1,1,0,0},
