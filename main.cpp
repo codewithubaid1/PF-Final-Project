@@ -156,7 +156,9 @@ void handleInput(){
     }
 
     else if(key == 's' || key == 'S'){
+     if(canMoveTo(blockX, blockY+1)){
       blockY++;
+     }
     }
   }
 }
