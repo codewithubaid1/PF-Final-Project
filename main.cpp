@@ -5,6 +5,7 @@
 #include <windows.h>
 
 using namespace std;
+
 bool isCurrentBlockCell(int, int);
 bool canMoveTo(int, int);
 void InitializeBoard();
@@ -17,9 +18,9 @@ void loadCurrentShape();
 bool canPlaceShape(int, int, int[][4]);
 void rotateCurrentBllock();
 void checkCompletedPatterns();
-
 const int ROWS = 20;
 const int COLS = 10;
+void applyGravity(bool marked[][COLS]);
 int score = 0; 
 int lastScore = 0;
 int activeShape[4][4];
@@ -107,7 +108,6 @@ void DrawBoard()
       }
     }
     cout << "|";
-    cout << "Score: " << score;
     cout << endl;
  
   }
@@ -119,6 +119,8 @@ void DrawBoard()
     cout << "-";
   }
   cout << "+";
+  cout << endl;
+  cout << "Score: " << score;
 }
 
 bool isCurrentBlockCell(int row, int col)
@@ -369,5 +371,23 @@ void checkCompletedPatterns(){
         marked[r][c] = true;
       }
     }
+  }
+  applyGravity(marked);
+}
+
+void applyGravity(bool marked[][COLS]){
+  for(int c = 0; c<COLS; c++){
+    int writeRow = ROWS - 1;
+    for(int r = ROWS - 1; r >= 0; r--){
+      if(!marked[r][c] && board[r][c] == 1){
+        board[writeRow][c] = 1;
+        writeRow--;
+      }
+    }
+
+    for(int r = writeRow; r >= 0; r--){
+      board[r][c] = 0;
+    }
+
   }
 }
