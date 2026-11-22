@@ -116,8 +116,8 @@ bool canMoveTo(int newX, int newY){
   for (int r = 0; r < 4; r++){
       for(int c = 0; c < 4; c++){
         if(shapes[currentShape][r][c] == 1){
-          int row = newY + 1; 
-          int col = newX + 1;
+          int row = newY + r; 
+          int col = newX + c;
           
           if( col < 0 || col >= COLS || row >= ROWS){
             return false;
@@ -127,8 +127,7 @@ bool canMoveTo(int newX, int newY){
             return false;
           }
         }
-
-        return true;
       }
+      return true;
   }
 }
