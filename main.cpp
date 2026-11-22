@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <conio.h>
+#include <string>
 #include <windows.h>
 
 using namespace std;
@@ -165,6 +166,28 @@ void DrawBoard()
 
   gotoXY(28, 13);
   cout << "Player Name   : " << highestScorePlayer;
+
+  gotoXY(28, 14);
+  cout << "--------Controls -------";
+
+  gotoXY(28, 16);
+  cout << "A : Move Left" ;
+
+  gotoXY(28, 17);
+  cout << "D : Move Right" ;
+
+
+  gotoXY(28, 18);
+  cout << "S : Move Down Faster" ;
+
+  
+  gotoXY(28, 19);
+  cout << "W: Rotate" ;
+
+   
+  gotoXY(28, 20);
+  cout << "Q: Quit" ;
+  
 }
 bool isCurrentBlockCell(int row, int col)
 {
