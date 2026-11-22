@@ -16,6 +16,7 @@ void GameLoop();
 void loadCurrentShape();
 bool canPlaceShape(int, int, int[][4]);
 void rotateCurrentBllock();
+void checkCompletedPatterns();
 
 const int ROWS = 20;
 const int COLS = 10;
@@ -106,7 +107,9 @@ void DrawBoard()
       }
     }
     cout << "|";
+    cout << "Score: " << score;
     cout << endl;
+ 
   }
 
   // Lower Boundary
@@ -248,6 +251,7 @@ void GameLoop()
       else
       {
         lockBlock();
+        checkCompletedPatterns();
 
         if (!spawnNextBlock())
         {
@@ -340,6 +344,29 @@ void rotateCurrentBllock(){
     for(int r = 0; r < 4; r++){
       for(int c = 0; c < 4; c++){
         activeShape[r][c] = normalized[r][c];
+      }
+    }
+  }
+}
+
+
+void checkCompletedPatterns(){
+
+  bool marked[ROWS][COLS] = {};
+
+  for (int r = 0; r < ROWS; r++){
+    bool complete = true;
+    for(int c = 0; c < COLS; c++){
+      if(board[r][c] == 0){
+        complete = false;
+        break;
+      }
+    }
+
+    if (complete){
+      score += 100;
+      for(int c = 0; c < COLS; c++){
+        marked[r][c] = true;
       }
     }
   }
