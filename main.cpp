@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
+bool isCurrentBlockCell(int, int);
+void InitializeBoard();
+void DrawBoard();
 
 const int ROWS = 20;
 const int COLS = 10;
@@ -35,6 +38,16 @@ int currentShape = rand() % 4;
 int nextShape = rand() % 4;
 int blockX = (COLS - shapeWidth[currentShape])/2;
 int blockY = 0;
+
+int main()
+{
+  srand(time(0));
+  InitializeBoard();
+  DrawBoard();
+  return 0;
+}
+
+
 void InitializeBoard()
 {
 
@@ -64,7 +77,7 @@ void DrawBoard()
     cout << "|";
     for (int j = 0; j < COLS; j++)
     {
-      if (board[i][j] == 1)
+      if (board[i][j] == 1 || isCurrentBlockCell(i,j))
       {
         cout << " #";
       }
@@ -86,10 +99,13 @@ void DrawBoard()
   cout << "+";
 }
 
-int main()
-{
-  srand(time(0));
-  InitializeBoard();
-  DrawBoard();
-  return 0;
+bool isCurrentBlockCell(int row, int col){
+  int r = row - blockY;
+  int c = col - blockX;
+  
+  if (r < 0 || r >= 4 || c < 0 || c >= 4){
+     return false;
+  }
+
+  return shapes[currentShape][r][c] == 1;
 }
