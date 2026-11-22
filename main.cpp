@@ -3,8 +3,10 @@
 #include <ctime>
 using namespace std;
 bool isCurrentBlockCell(int, int);
+bool canMoveTo(int, int);
 void InitializeBoard();
 void DrawBoard();
+
 
 const int ROWS = 20;
 const int COLS = 10;
@@ -108,4 +110,25 @@ bool isCurrentBlockCell(int row, int col){
   }
 
   return shapes[currentShape][r][c] == 1;
+}
+
+bool canMoveTo(int newX, int newY){
+  for (int r = 0; r < 4; r++){
+      for(int c = 0; c < 4; c++){
+        if(shapes[currentShape][r][c] == 1){
+          int row = newY + 1; 
+          int col = newX + 1;
+          
+          if( col < 0 || col >= COLS || row >= ROWS){
+            return false;
+          }
+
+          if(board[row][col] == 1){
+            return false;
+          }
+        }
+
+        return true;
+      }
+  }
 }
