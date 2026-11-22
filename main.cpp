@@ -29,7 +29,10 @@ int shapes[4][4][4]{
 
 int shapeHeight[3] = {2,1,2};
 int shapeHeight[3] = {2,4,3};
-
+int currentShape; 
+int nextShape;
+int blockX;
+int blockY;
 void InitializeBoard()
 {
 
