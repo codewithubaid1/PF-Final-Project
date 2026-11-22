@@ -18,9 +18,11 @@ void loadCurrentShape();
 bool canPlaceShape(int, int, int[][4]);
 void rotateCurrentBllock();
 void checkCompletedPatterns();
+int calculateScore(int, int);
 const int ROWS = 20;
 const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool [][COLS]);
+void markPattern(int, int, int, int, bool [][COLS]);
 void applyGravity(bool marked[][COLS]);
 int score = 0; 
 int lastScore = 0;
@@ -231,7 +233,7 @@ bool spawnNextBlock()
 
   currentShape = nextShape;
   loadCurrentShape();
-  nextShape = rand() % 3;
+  nextShape = rand() % 5;
   blockY = 0;
   blockX = (COLS - shapeWidth[currentShape]) / 2;
 
@@ -381,67 +383,37 @@ void checkCompletedPatterns(){
     }
 
     if (complete){
-      score += 100;
+      score += calculateScore(1, COLS);
+      isPatternDetected = true;
       for(int c = 0; c < COLS; c++){
         marked[r][c] = true;
       }
     }
   }
 
-  //square detection
-  for(int r = 0; r <= ROWS-3; r++){
-      for(int c = 0; c <= COLS-3; c++){
-          bool complete = true;
-          for(int i = 0; i < 3; i++){
-              for(int j = 0; j < 3; j++){
-                  if(board[r+i][c+j] == 0){
-                      complete = false;
-                      break;
-                  }
-              }
-              if(!complete) break;
-          }
+  for(int area = ROWS * COLS; area >= 6; area--){
+    for(int height = 2; height <= ROWS; height++){
+      for(int width = 2; width <= COLS; width++){
+        if(height * width != area){
+          continue;
+        }
 
-          if(complete){
-              score += 150;
-              isPatternDetected = true;
-              for(int i = 0; i < 3; i++){
-                  for(int j = 0; j < 3; j++){
-                      marked[r+i][c+j] = true;
-                  }
-              }
-          }
-      }
-  }
+        if(height == 2 && width == 2){
+          continue;
+        }
 
-  //rectangle 2x3 detection
-  for(int r = 0; r <= ROWS-2; r++){
-      for(int c = 0; c <= COLS-3; c++){
-          if(isPatternFull(r, c, 2, 3, marked)){
-              score += 120;
+        for(int r = 0; r <= ROWS - height; r++){
+          for(int c = 0; c <= COLS - width; c++){
+            if(isPatternFull(r, c, height, width, marked)){
+              score += calculateScore(height, width);
               isPatternDetected = true;
-              for(int i = 0; i < 2; i++){
-                  for(int j = 0; j < 3; j++){
-                      marked[r+i][c+j] = true;
-                  }
-              }
-          }
-      }
-  }
-
-  //rectangle 3x2 detection
-  for(int r = 0; r <= ROWS-3; r++){
-      for(int c = 0; c <= COLS-2; c++){
-          if(isPatternFull(r, c, 3, 2, marked)){
-              score += 120;
+              markPattern(r, c, height, width, marked);
               isPatternDetected = true;
-              for(int i = 0; i < 3; i++){
-                  for(int j = 0; j < 2; j++){
-                      marked[r+i][c+j] = true;
-                  }
-              }
+            }
           }
+        }
       }
+    }
   }
 
 
@@ -467,6 +439,17 @@ void applyGravity(bool marked[][COLS]){
   }
 }
 
+
+
+void markPattern(int startR, int startC, int height, int width, bool marked[][COLS]){
+  for(int r = 0; r <  height; r++){
+    for(int c = 0; c <  width; c++){
+      marked[startR + r][startC + c] = true;
+    }
+  }
+  
+}
+
 bool isPatternFull(int startR, int startC, int height, int width, bool marked[][COLS]){
   for(int r = 0; r <  height; r++){
     for(int c = 0; c <  width; c++){
@@ -476,4 +459,14 @@ bool isPatternFull(int startR, int startC, int height, int width, bool marked[][
     }
   }
   return true;
+}
+
+int calculateScore(int height, int width){
+  
+  if(height == 1 && width == COLS){
+    return 100;
+  } else if(height == width ){
+    return (100*height)-150;
+  } 
+  return height*width*20;
 }
