@@ -33,7 +33,6 @@ string highestScorePlayer;
 int lastScore = 0;
 string lastScorePlayer;
 int score = 0; 
-int lastScore = 0;
 int activeShape[4][4];
 int board[ROWS][COLS];
 int shapes[5][4][4]{
