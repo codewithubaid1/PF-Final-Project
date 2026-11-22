@@ -57,7 +57,7 @@ int main()
   blockX = (COLS - shapeWidth[currentShape]) / 2;
   blockY = 0;
   InitializeBoard();
-  DrawBoard();
+  GameLoop();
   return 0;
 }
 
@@ -214,4 +214,35 @@ bool spawnNextBlock()
   }
 
   return true;
+}
+
+void GameLoop() {
+  DWORD lastFall = GetTickCount();
+  const DWORD fallInterval = 700;
+
+  bool running = true;
+
+  while(running){
+    handleInput();
+
+    DWORD currentTime = GetTickCount();
+
+    if(currentTime - lastFall >= fallInterval){
+      if(canMoveTo(blockX,blockY+1)){
+        blockY++;
+      }else{
+        lockBlock();
+
+        if(!spawnNextBlock()){
+          running = false;
+        }
+      }
+      lastFall = currentTime;
+    }
+    system("cls");
+    DrawBoard();
+    Sleep(10);
+  }
+
+  cout << "\n\nGame Over";
 }
