@@ -22,7 +22,7 @@ void DrawBoard()
 {
   // Upper Boundary
   cout << "+";
-  for (int i = 1; i <= ROWS; i++)
+  for (int i = 1; i <= COLS*2; i++)
   {
     cout << "-";
   }
