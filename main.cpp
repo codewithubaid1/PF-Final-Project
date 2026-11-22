@@ -26,7 +26,7 @@ const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool[][COLS]);
 void markPattern(int, int, int, int, bool[][COLS]);
 void applyGravity(bool marked[][COLS]);
-
+void DrawStatistics();
 string playerName;
 int level = 1;
 int highestScore = 0;
@@ -142,51 +142,7 @@ void DrawBoard()
     cout << "-";
   cout << "+";
 
-  // Statistics
-  gotoXY(28, 2);
-  cout << "------ GAME INFORMATION ------";
-
-  gotoXY(28, 4);
-  cout << "Player Name : " << playerName;
-
-  gotoXY(28, 5);
-  cout << "Score       : " << score;
-
-  gotoXY(28, 6);
-  cout << "Level       : " << level;
-
-  gotoXY(28, 7);
-  cout << "Speed       : Medium";
-
-  gotoXY(28, 10);
-  cout << "-------- HIGHEST SCORE -------";
-
-  gotoXY(28, 12);
-  cout << "Highest Score : " << highestScore;
-
-  gotoXY(28, 13);
-  cout << "Player Name   : " << highestScorePlayer;
-
-  gotoXY(28, 14);
-  cout << "--------Controls -------";
-
-  gotoXY(28, 16);
-  cout << "A : Move Left" ;
-
-  gotoXY(28, 17);
-  cout << "D : Move Right" ;
-
-
-  gotoXY(28, 18);
-  cout << "S : Move Down Faster" ;
-
-  
-  gotoXY(28, 19);
-  cout << "W: Rotate" ;
-
-   
-  gotoXY(28, 20);
-  cout << "Q: Quit" ;
+  DrawStatistics();
   
 }
 bool isCurrentBlockCell(int row, int col)
@@ -567,4 +523,50 @@ void gotoXY(int x, int y)
   coord.X = x;
   coord.Y = y;
   SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+
+void DrawStatistics()
+{
+    gotoXY(28, 2);
+    cout << "------ GAME INFORMATION ------";
+
+    gotoXY(28, 4);
+    cout << "Player Name : " << playerName << "          ";
+
+    gotoXY(28, 5);
+    cout << "Score       : " << score << "          ";
+
+    gotoXY(28, 6);
+    cout << "Level       : " << level;
+
+    gotoXY(28, 7);
+    cout << "Speed       : Medium";
+
+    gotoXY(28, 10);
+    cout << "-------- HIGHEST SCORE -------";
+
+    gotoXY(28, 12);
+    cout << "Highest Score : " << highestScore << "          ";
+
+    gotoXY(28, 13);
+    cout << "Player Name   : " << highestScorePlayer << "          ";
+
+    gotoXY(28, 14);
+    cout << "-------- CONTROLS ------------";
+
+    gotoXY(28, 16);
+    cout << "A : Move Left";
+
+    gotoXY(28, 17);
+    cout << "D : Move Right";
+
+    gotoXY(28, 18);
+    cout << "S : Move Down Faster";
+
+    gotoXY(28, 19);
+    cout << "W : Rotate";
+
+    gotoXY(28, 20);
+    cout << "Q : Quit";
 }
