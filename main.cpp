@@ -3,6 +3,7 @@
 #include <ctime>
 #include <conio.h>
 #include <string>
+#include <iomanip>
 #include <windows.h>
 
 using namespace std;
@@ -285,7 +286,7 @@ void GameLoop()
       }
       lastFall = currentTime;
     }
-    system("cls");
+
     DrawBoard();
     Sleep(10);
   }
@@ -535,7 +536,7 @@ void DrawStatistics()
     cout << "Player Name : " << playerName << "          ";
 
     gotoXY(28, 5);
-    cout << "Score       : " << score << "          ";
+    cout << "Score       : " << setw(10) << score << "          ";
 
     gotoXY(28, 6);
     cout << "Level       : " << level;
