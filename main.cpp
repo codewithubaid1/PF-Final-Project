@@ -573,17 +573,17 @@ void DrawStatistics()
   cout << "------ GAME INFORMATION ------";
 
   gotoXY(28, 4);
-  cout << "Player Name : " << setw(20) << playerName << "          ";
+  cout << "Player Name : " << setw(15) << playerName << "          ";
 
   gotoXY(28, 5);
-  cout << "Score       : " << setw(10) << score << "          ";
+  cout << "Score       : " << setw(15) << score << "          ";
 
   gotoXY(28, 6);
-  cout << "Level       : " << level;
+  cout << "Level       : " << setw(15)<< level;
 
   gotoXY(28, 7);
 
-  cout << "Speed       : ";
+  cout << "Speed       : " << setw(15);
 
   if (level == 1)
     cout << "Slow  ";
@@ -596,10 +596,10 @@ void DrawStatistics()
   cout << "-------- HIGHEST SCORE -------";
 
   gotoXY(28, 12);
-  cout << "Highest Score : " << setw(10) << highestScore << "          ";
+  cout << "Highest Score : " << setw(15) << highestScore << "          ";
 
   gotoXY(28, 13);
-  cout << "Player Name   : " << setw(20) << highestScorePlayer << "          ";
+  cout << "Player Name   : " << setw(15) << highestScorePlayer << "          ";
 
   gotoXY(28, 14);
   cout << "-------- CONTROLS ------------";
@@ -618,6 +618,9 @@ void DrawStatistics()
 
   gotoXY(28, 20);
   cout << "Q : Quit";
+
+  gotoXY(28, 21)
+  cout << "P: Pause";
 }
 
 void hideCursor()
@@ -650,43 +653,42 @@ int getFallInterval()
   else
     return 250;
 }
-
 void DrawLegend()
 {
-  gotoXY(28, 23);
-  cout << "-------- BLOCK LEGEND --------";
+    gotoXY(55, 2);
+    cout << "------ BLOCK LEGEND ------";
 
-  gotoXY(28, 25);
-  cout << "O : Square";
+    gotoXY(55, 4);
+    cout << "O : Square";
 
-  gotoXY(28, 26);
-  cout << "I : Line";
+    gotoXY(55, 5);
+    cout << "I : Line";
 
-  gotoXY(28, 27);
-  cout << "Z : Zigzag";
+    gotoXY(55, 6);
+    cout << "Z : Zigzag";
 
-  gotoXY(28, 28);
-  cout << "T : T-Shape";
+    gotoXY(55, 7);
+    cout << "T : T-Shape";
 
-  gotoXY(28, 29);
-  cout << "L : L-Shape";
+    gotoXY(55, 8);
+    cout << "L : L-Shape";
 }
 
 void DrawNextShape()
 {
-  gotoXY(28, 32);
-  cout << "-------- NEXT BLOCK --------";
+    gotoXY(82, 2);
+    cout << "------- NEXT BLOCK -------";
 
-  for (int r = 0; r < 4; r++)
-  {
-    gotoXY(32, 34 + r);
-
-    for (int c = 0; c < 4; c++)
+    for (int r = 0; r < 4; r++)
     {
-      if (shapes[nextShape][r][c] == 1)
-        cout << "[]";
-      else
-        cout << "  ";
+        gotoXY(88, 4 + r);
+
+        for (int c = 0; c < 4; c++)
+        {
+            if (shapes[nextShape][r][c] == 1)
+                cout << "[]";
+            else
+                cout << "  ";
+        }
     }
-  }
 }
