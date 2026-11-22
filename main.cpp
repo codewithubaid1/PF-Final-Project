@@ -151,6 +151,8 @@ void DrawBoard()
   cout << "+";
 
   DrawStatistics();
+  DrawLegend();
+  DrawNextShape();
 }
 bool isCurrentBlockCell(int row, int col)
 {
@@ -304,8 +306,6 @@ void GameLoop()
     }
 
     const DWORD fallInterval = getFallInterval();
-    
-
 
     if (currentTime - lastFall >= fallInterval)
     {
@@ -647,4 +647,44 @@ int getFallInterval()
     return 450;
   else
     return 250;
+}
+
+void DrawLegend()
+{
+  gotoXY(28, 23);
+  cout << "-------- BLOCK LEGEND --------";
+
+  gotoXY(28, 25);
+  cout << "O : Square";
+
+  gotoXY(28, 26);
+  cout << "I : Line";
+
+  gotoXY(28, 27);
+  cout << "Z : Zigzag";
+
+  gotoXY(28, 28);
+  cout << "T : T-Shape";
+
+  gotoXY(28, 29);
+  cout << "L : L-Shape";
+}
+
+void DrawNextShape()
+{
+  gotoXY(28, 32);
+  cout << "-------- NEXT BLOCK --------";
+
+  for (int r = 0; r < 4; r++)
+  {
+    gotoXY(32, 34 + r);
+
+    for (int c = 0; c < 4; c++)
+    {
+      if (shapes[nextShape][r][c] == 1)
+        cout << "[]";
+      else
+        cout << "  ";
+    }
+  }
 }
