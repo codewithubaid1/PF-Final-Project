@@ -23,12 +23,17 @@ void checkCompletedPatterns();
 int calculateScore(int, int);
 void gotoXY(int, int);
 void hideCursor();
+void updateLevel();
+int getFallInterval();
 const int ROWS = 20;
 const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool[][COLS]);
 void markPattern(int, int, int, int, bool[][COLS]);
 void applyGravity(bool marked[][COLS]);
 void DrawStatistics();
+
+bool isPaused = false;
+bool quitRequested = false;
 string playerName;
 int level = 1;
 int highestScore = 0;
@@ -146,7 +151,6 @@ void DrawBoard()
   cout << "+";
 
   DrawStatistics();
-  
 }
 bool isCurrentBlockCell(int row, int col)
 {
@@ -192,6 +196,20 @@ void handleInput()
   if (_kbhit())
   {
     char key = _getch();
+    if (key == 'p' || key == 'P')
+    {
+      isPaused = !isPaused;
+      return;
+    }
+
+    if (key == 'q' || key == 'Q')
+    {
+      quitRequested = true;
+      return;
+    }
+
+    if (isPaused)
+      return;
     if (key == 'a' || key == 'A')
     {
       if (canMoveTo(blockX - 1, blockY))
@@ -260,7 +278,8 @@ bool spawnNextBlock()
 void GameLoop()
 {
   DWORD lastFall = GetTickCount();
-  const DWORD fallInterval = 700;
+  updateLevel();
+  const DWORD fallInterval = getFallInterval();
 
   bool running = true;
 
@@ -528,59 +547,86 @@ void gotoXY(int x, int y)
   SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-
 void DrawStatistics()
 {
-    gotoXY(28, 2);
-    cout << "------ GAME INFORMATION ------";
+  gotoXY(28, 2);
+  cout << "------ GAME INFORMATION ------";
 
-    gotoXY(28, 4);
-    cout << "Player Name : " << setw(20) << playerName << "          ";
+  gotoXY(28, 4);
+  cout << "Player Name : " << setw(20) << playerName << "          ";
 
-    gotoXY(28, 5);
-    cout << "Score       : " << setw(10) << score << "          ";
+  gotoXY(28, 5);
+  cout << "Score       : " << setw(10) << score << "          ";
 
-    gotoXY(28, 6);
-    cout << "Level       : " << level;
+  gotoXY(28, 6);
+  cout << "Level       : " << level;
 
-    gotoXY(28, 7);
-    cout << "Speed       : Medium";
+  gotoXY(28, 7);
 
-    gotoXY(28, 10);
-    cout << "-------- HIGHEST SCORE -------";
+  cout << "Speed       : ";
 
-    gotoXY(28, 12);
-    cout << "Highest Score : " << setw(10) << highestScore << "          ";
+  if (level == 1)
+    cout << "Slow  ";
+  else if (level == 2)
+    cout << "Medium";
+  else
+    cout << "Fast  ";
 
-    gotoXY(28, 13);
-    cout << "Player Name   : " << setw(20) << highestScorePlayer << "          ";
+  gotoXY(28, 10);
+  cout << "-------- HIGHEST SCORE -------";
 
-    gotoXY(28, 14);
-    cout << "-------- CONTROLS ------------";
+  gotoXY(28, 12);
+  cout << "Highest Score : " << setw(10) << highestScore << "          ";
 
-    gotoXY(28, 16);
-    cout << "A : Move Left";
+  gotoXY(28, 13);
+  cout << "Player Name   : " << setw(20) << highestScorePlayer << "          ";
 
-    gotoXY(28, 17);
-    cout << "D : Move Right";
+  gotoXY(28, 14);
+  cout << "-------- CONTROLS ------------";
 
-    gotoXY(28, 18);
-    cout << "S : Move Down Faster";
+  gotoXY(28, 16);
+  cout << "A : Move Left";
 
-    gotoXY(28, 19);
-    cout << "W : Rotate";
+  gotoXY(28, 17);
+  cout << "D : Move Right";
 
-    gotoXY(28, 20);
-    cout << "Q : Quit";
+  gotoXY(28, 18);
+  cout << "S : Move Down Faster";
+
+  gotoXY(28, 19);
+  cout << "W : Rotate";
+
+  gotoXY(28, 20);
+  cout << "Q : Quit";
 }
 
 void hideCursor()
 {
-    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+  HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    CONSOLE_CURSOR_INFO cursorInfo;
-    cursorInfo.dwSize = 1;
-    cursorInfo.bVisible = FALSE;
+  CONSOLE_CURSOR_INFO cursorInfo;
+  cursorInfo.dwSize = 1;
+  cursorInfo.bVisible = FALSE;
 
-    SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+  SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+}
+
+void updateLevel()
+{
+  if (score >= 1500)
+    level = 3;
+  else if (score >= 500)
+    level = 2;
+  else
+    level = 1;
+}
+
+int getFallInterval()
+{
+  if (level == 1)
+    return 700;
+  else if (level == 2)
+    return 450;
+  else
+    return 250;
 }
