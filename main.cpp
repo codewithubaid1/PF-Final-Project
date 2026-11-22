@@ -10,6 +10,8 @@ bool canMoveTo(int, int);
 void InitializeBoard();
 void DrawBoard();
 void handleInput();
+void lockBlock();
+void GameLoop();
 
 const int ROWS = 20;
 const int COLS = 10;
@@ -159,6 +161,20 @@ void handleInput(){
      if(canMoveTo(blockX, blockY+1)){
       blockY++;
      }
+    }
+  }
+}
+
+void lockBlock(){
+
+  for (int r = 0; r < 4; r++){
+    for (int c = 0; c < 4; c++){
+      if(shapes[currentShape][r][c] == 1){
+        int row = blockY + r;
+        int col = blockX + c;
+
+        board[row][col] = 1;
+      }
     }
   }
 }
