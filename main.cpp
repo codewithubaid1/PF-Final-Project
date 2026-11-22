@@ -36,13 +36,19 @@ int shapes[3][4][4]{
 
 int shapeHeight[3] = {2,1,2};
 int shapeWidth[3] = {2,4,3};
-int currentShape = rand() % 4;
-int nextShape = rand() % 4;
-int blockX = (COLS - shapeWidth[currentShape])/2;
+
+int currentShape;
+int nextShape;
+int blockX;
 int blockY = 0;
 
 int main()
 {
+
+  currentShape = rand() % 3;
+  nextShape = rand() % 3;
+  blockX = (COLS - shapeWidth[currentShape])/2;
+  blockY = 0;
   srand(time(0));
   InitializeBoard();
   DrawBoard();
@@ -127,7 +133,7 @@ bool canMoveTo(int newX, int newY){
             return false;
           }
         }
-      }
-      return true;
+      } 
   }
+  return true;
 }
