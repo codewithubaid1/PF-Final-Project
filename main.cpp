@@ -676,12 +676,12 @@ void DrawLegend()
 
 void DrawNextShape()
 {
-    gotoXY(88, 2);
+    gotoXY(60, 11);
     cout << "------- NEXT BLOCK -------";
 
     for (int r = 0; r < 4; r++)
     {
-        gotoXY(95, 4 + r);
+        gotoXY(70, 13 + r);
 
         for (int c = 0; c < 4; c++)
         {
