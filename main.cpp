@@ -13,10 +13,12 @@ void handleInput();
 void lockBlock();
 bool spawnNextBlock();
 void GameLoop();
+void loadCurrentShape();
+void loadCurrentShape();
 
 const int ROWS = 20;
 const int COLS = 10;
-
+int activeShape[4][4];
 int board[ROWS][COLS];
 int shapes[3][4][4]{
     {
@@ -245,4 +247,13 @@ void GameLoop() {
   }
 
   cout << "\n\nGame Over";
+}
+
+void loadCurrentShape(){
+
+  for(int r = 0; r < 4; r++){
+    for(int c = 0; c < 4; c++){
+      activeShape[r][c] = shapes[currentShape][r][c];
+    }
+  }
 }
