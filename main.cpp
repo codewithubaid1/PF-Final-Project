@@ -25,6 +25,8 @@ void gotoXY(int, int);
 void hideCursor();
 void updateLevel();
 int getFallInterval();
+void DrawLegend();
+void DrawNextShape();
 const int ROWS = 20;
 const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool[][COLS]);
