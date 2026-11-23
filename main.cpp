@@ -33,7 +33,7 @@ bool isPatternFull(int, int, int, int, bool[][COLS]);
 void markPattern(int, int, int, int, bool[][COLS]);
 void applyGravity(bool marked[][COLS]);
 void DrawStatistics();
-void DrawSeparator();
+void DrawSeparator(int, int ,int);
 
 bool isPaused = false;
 bool quitRequested = false;
