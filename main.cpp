@@ -105,7 +105,7 @@ int main()
   GameLoop();
   system("cls");
   cout << "=================Game Result==================\n";
-  cout << "Your Name: " << name << endl;
+  cout << "Your Name: " << playerName << endl;
   cout << "Your Score: " << score << endl;
   cout << "Highest Score: " << highestScore << endl;
   cout << "Highest Person: " << highestScorePlayer << endl;
