@@ -584,17 +584,17 @@ void DrawStatistics()
   cout << "------ GAME INFORMATION ------";
 
   gotoXY(28, 4);
-  cout << "Player Name : " << setw(15) << playerName << "          ";
+  cout << "Player Name : " << setw(13) << playerName << "          ";
 
   gotoXY(28, 5);
-  cout << "Score       : " << setw(15) << score << "          ";
+  cout << "Score       : " << setw(13) << score << "          ";
 
   gotoXY(28, 6);
-  cout << "Level       : " << setw(15)<< level;
+  cout << "Level       : " << setw(13)<< level;
 
   gotoXY(28, 7);
 
-  cout << "Speed       : " << setw(15);
+  cout << "Speed       : " << setw(13);
 
   if (level == 1)
     cout << "Slow  ";
@@ -607,10 +607,10 @@ void DrawStatistics()
   cout << "-------- HIGHEST SCORE -------";
 
   gotoXY(28, 12);
-  cout << "Highest Score : " << setw(15) << highestScore << "          ";
+  cout << "Highest Score : " << setw(13) << highestScore << "          ";
 
   gotoXY(28, 13);
-  cout << "Player Name   : " << setw(15) << highestScorePlayer << "          ";
+  cout << "Player Name   : " << setw(13) << highestScorePlayer << "          ";
 
   gotoXY(28, 14);
   cout << "-------- CONTROLS ------------";
@@ -675,28 +675,28 @@ void DrawSeparator(int x, int startY, int endY)
 }
 void DrawLegend()
 {
-    gotoXY(60, 2);
+    gotoXY(62, 2);
     cout << "------ BLOCK LEGEND ------";
 
-    gotoXY(63, 4);
+    gotoXY(65, 4);
     cout << "O : Square";
 
-    gotoXY(63, 5);
+    gotoXY(65, 5);
     cout << "I : Line";
 
-    gotoXY(63, 6);
+    gotoXY(65, 6);
     cout << "Z : Zigzag";
 
-    gotoXY(63, 7);
+    gotoXY(65, 7);
     cout << "T : T-Shape";
 
-    gotoXY(63, 8);
+    gotoXY(65, 8);
     cout << "L : L-Shape";
 }
 
 void DrawNextShape()
 {
-    gotoXY(60, 11);
+    gotoXY(62, 11);
     cout << "------- NEXT BLOCK -------";
 
     for (int r = 0; r < 4; r++)
