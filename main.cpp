@@ -103,13 +103,7 @@ int main()
   blockY = 0;
   InitializeBoard();
   GameLoop();
-  system("cls");
-  cout << "=================Game Result==================\n";
-  cout << "Your Name: " << playerName << endl;
-  cout << "Your Score: " << score << endl;
-  cout << "Highest Score: " << highestScore << endl;
-  cout << "Highest Person: " << highestScorePlayer << endl;
-  cout << "===============================================\n";
+  
   
   return 0;
 }
@@ -163,7 +157,7 @@ void DrawBoard()
   cout << "+";
 
   DrawStatistics();
-  DrawSeparator(55, 2, 20);
+  DrawSeparator(59, 2, 20);
   DrawLegend();
   DrawNextShape();
 }
@@ -343,7 +337,13 @@ void GameLoop()
     Sleep(10);
   }
 
-  cout << "\n\nGame Over";
+  system("cls");
+  cout << "=================Game Over==================\n";
+  cout << "Your Name: " << playerName << endl;
+  cout << "Your Score: " << score << endl;
+  cout << "Highest Score: " << highestScore << endl;
+  cout << "Highest Person: " << highestScorePlayer << endl;
+  cout << "===============================================\n";
 }
 
 void loadCurrentShape()
