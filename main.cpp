@@ -33,6 +33,7 @@ bool isPatternFull(int, int, int, int, bool[][COLS]);
 void markPattern(int, int, int, int, bool[][COLS]);
 void applyGravity(bool marked[][COLS]);
 void DrawStatistics();
+void DrawSeparator();
 
 bool isPaused = false;
 bool quitRequested = false;
@@ -92,6 +93,7 @@ int main()
 
   cout << "Enter your name: ";
   getline(cin, playerName);
+  system("cls");
   srand(time(0));
   hideCursor();
   currentShape = rand() % 5;
@@ -101,6 +103,14 @@ int main()
   blockY = 0;
   InitializeBoard();
   GameLoop();
+  system("cls");
+  cout << "=================Game Result==================\n"
+  cout << "Your Name: " << name << endl;
+  cout << "Your Score: " << score << endl;
+  cout << "Highest Score: " << highestScore << endl;
+  cout << "Highest Person: " << highestScorePlayer << endl;
+  cout << "===============================================\n"
+  
   return 0;
 }
 
