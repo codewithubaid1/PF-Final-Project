@@ -3,6 +3,7 @@
 #include <ctime>
 #include <conio.h>
 #include <string>
+#include <iomanip>
 #include <windows.h>
 
 using namespace std;
@@ -21,12 +22,21 @@ void rotateCurrentBllock();
 void checkCompletedPatterns();
 int calculateScore(int, int);
 void gotoXY(int, int);
+void hideCursor();
+void updateLevel();
+int getFallInterval();
+void DrawLegend();
+void DrawNextShape();
 const int ROWS = 20;
 const int COLS = 10;
 bool isPatternFull(int, int, int, int, bool[][COLS]);
 void markPattern(int, int, int, int, bool[][COLS]);
 void applyGravity(bool marked[][COLS]);
+void DrawStatistics();
+void DrawSeparator(int, int ,int);
 
+bool isPaused = false;
+bool quitRequested = false;
 string playerName;
 int level = 1;
 int highestScore = 0;
@@ -83,7 +93,9 @@ int main()
 
   cout << "Enter your name: ";
   getline(cin, playerName);
+  system("cls");
   srand(time(0));
+  hideCursor();
   currentShape = rand() % 5;
   nextShape = rand() % 5;
   loadCurrentShape();
@@ -91,6 +103,8 @@ int main()
   blockY = 0;
   InitializeBoard();
   GameLoop();
+  
+  
   return 0;
 }
 
@@ -142,52 +156,10 @@ void DrawBoard()
     cout << "-";
   cout << "+";
 
-  // Statistics
-  gotoXY(28, 2);
-  cout << "------ GAME INFORMATION ------";
-
-  gotoXY(28, 4);
-  cout << "Player Name : " << playerName;
-
-  gotoXY(28, 5);
-  cout << "Score       : " << score;
-
-  gotoXY(28, 6);
-  cout << "Level       : " << level;
-
-  gotoXY(28, 7);
-  cout << "Speed       : Medium";
-
-  gotoXY(28, 10);
-  cout << "-------- HIGHEST SCORE -------";
-
-  gotoXY(28, 12);
-  cout << "Highest Score : " << highestScore;
-
-  gotoXY(28, 13);
-  cout << "Player Name   : " << highestScorePlayer;
-
-  gotoXY(28, 14);
-  cout << "--------Controls -------";
-
-  gotoXY(28, 16);
-  cout << "A : Move Left" ;
-
-  gotoXY(28, 17);
-  cout << "D : Move Right" ;
-
-
-  gotoXY(28, 18);
-  cout << "S : Move Down Faster" ;
-
-  
-  gotoXY(28, 19);
-  cout << "W: Rotate" ;
-
-   
-  gotoXY(28, 20);
-  cout << "Q: Quit" ;
-  
+  DrawStatistics();
+  DrawSeparator(59, 2, 20);
+  DrawLegend();
+  DrawNextShape();
 }
 bool isCurrentBlockCell(int row, int col)
 {
@@ -233,6 +205,20 @@ void handleInput()
   if (_kbhit())
   {
     char key = _getch();
+    if (key == 'p' || key == 'P')
+    {
+      isPaused = !isPaused;
+      return;
+    }
+
+    if (key == 'q' || key == 'Q')
+    {
+      quitRequested = true;
+      return;
+    }
+
+    if (isPaused)
+      return;
     if (key == 'a' || key == 'A')
     {
       if (canMoveTo(blockX - 1, blockY))
@@ -301,15 +287,32 @@ bool spawnNextBlock()
 void GameLoop()
 {
   DWORD lastFall = GetTickCount();
-  const DWORD fallInterval = 700;
 
   bool running = true;
 
   while (running)
   {
+    updateLevel();
     handleInput();
-
     DWORD currentTime = GetTickCount();
+
+    if (quitRequested)
+    {
+      running = false;
+      break;
+    }
+
+    if (isPaused)
+    {
+      lastFall = GetTickCount();
+
+      DrawBoard();
+      Sleep(30);
+
+      continue;
+    }
+
+    const DWORD fallInterval = getFallInterval();
 
     if (currentTime - lastFall >= fallInterval)
     {
@@ -329,12 +332,18 @@ void GameLoop()
       }
       lastFall = currentTime;
     }
-    system("cls");
+
     DrawBoard();
     Sleep(10);
   }
 
-  cout << "\n\nGame Over";
+  system("cls");
+  cout << "=================Game Over==================\n";
+  cout << "Your Name: " << playerName << endl;
+  cout << "Your Score: " << score << endl;
+  cout << "Highest Score: " << highestScore << endl;
+  cout << "Highest Person: " << highestScorePlayer << endl;
+  cout << "===============================================\n";
 }
 
 void loadCurrentShape()
@@ -567,4 +576,139 @@ void gotoXY(int x, int y)
   coord.X = x;
   coord.Y = y;
   SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void DrawStatistics()
+{
+  gotoXY(28, 2);
+  cout << "------ GAME INFORMATION ------";
+
+  gotoXY(28, 4);
+  cout << "Player Name : " << setw(13) << playerName << "          ";
+
+  gotoXY(28, 5);
+  cout << "Score       : " << setw(13) << score << "          ";
+
+  gotoXY(28, 6);
+  cout << "Level       : " << setw(13)<< level;
+
+  gotoXY(28, 7);
+
+  cout << "Speed       : " << setw(13);
+
+  if (level == 1)
+    cout << "Slow  ";
+  else if (level == 2)
+    cout << "Medium";
+  else
+    cout << "Fast  ";
+
+  gotoXY(28, 10);
+  cout << "-------- HIGHEST SCORE -------";
+
+  gotoXY(28, 12);
+  cout << "Highest Score : " << setw(13) << highestScore << "          ";
+
+  gotoXY(28, 13);
+  cout << "Player Name   : " << setw(13) << highestScorePlayer << "          ";
+
+  gotoXY(28, 14);
+  cout << "-------- CONTROLS ------------";
+
+  gotoXY(28, 16);
+  cout << "A : Move Left";
+
+  gotoXY(28, 17);
+  cout << "D : Move Right";
+
+  gotoXY(28, 18);
+  cout << "S : Move Down Faster";
+
+  gotoXY(28, 19);
+  cout << "W : Rotate";
+
+  gotoXY(28, 20);
+  cout << "Q : Quit";
+
+  gotoXY(28, 21);
+  cout << "P: Pause";
+}
+
+void hideCursor()
+{
+  HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+  CONSOLE_CURSOR_INFO cursorInfo;
+  cursorInfo.dwSize = 1;
+  cursorInfo.bVisible = FALSE;
+
+  SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+}
+
+void updateLevel()
+{
+  if (score >= 1000)
+    level = 3;
+  else if (score >= 300)
+    level = 2;
+  else
+    level = 1;
+}
+
+int getFallInterval()
+{
+  if (level == 1)
+    return 700;
+  else if (level == 2)
+    return 450;
+  else
+    return 250;
+}
+
+void DrawSeparator(int x, int startY, int endY)
+{
+    for (int y = startY; y <= endY; y++)
+    {
+        gotoXY(x, y);
+        cout << "|";
+    }
+}
+void DrawLegend()
+{
+    gotoXY(62, 2);
+    cout << "------ BLOCK LEGEND ------";
+
+    gotoXY(65, 4);
+    cout << "O : Square";
+
+    gotoXY(65, 5);
+    cout << "I : Line";
+
+    gotoXY(65, 6);
+    cout << "Z : Zigzag";
+
+    gotoXY(65, 7);
+    cout << "T : T-Shape";
+
+    gotoXY(65, 8);
+    cout << "L : L-Shape";
+}
+
+void DrawNextShape()
+{
+    gotoXY(62, 11);
+    cout << "------- NEXT BLOCK -------";
+
+    for (int r = 0; r < 4; r++)
+    {
+        gotoXY(70, 13 + r);
+
+        for (int c = 0; c < 4; c++)
+        {
+            if (shapes[nextShape][r][c] == 1)
+                cout << "[]";
+            else
+                cout << "  ";
+        }
+    }
 }
