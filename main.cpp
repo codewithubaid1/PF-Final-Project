@@ -104,12 +104,12 @@ int main()
   InitializeBoard();
   GameLoop();
   system("cls");
-  cout << "=================Game Result==================\n"
+  cout << "=================Game Result==================\n";
   cout << "Your Name: " << name << endl;
   cout << "Your Score: " << score << endl;
   cout << "Highest Score: " << highestScore << endl;
   cout << "Highest Person: " << highestScorePlayer << endl;
-  cout << "===============================================\n"
+  cout << "===============================================\n";
   
   return 0;
 }
